@@ -1,0 +1,12 @@
+{
+  "name": "fofx-web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/functzia/fofx-web.git",
+  "author": "Alon Niv <oakfang@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.3",
+    "koa-body": "^4.0.4"
+  }
+}
