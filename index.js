@@ -1,5 +1,6 @@
-const Koa = require("koa");
-const koaBody = require("koa-body");
+const Koa = require('koa');
+const koaBody = require('koa-body');
+const tiny = require('tiny-json-http');
 
 const app = (module.exports = new Koa());
 
@@ -11,11 +12,11 @@ app.use(async function webApp(ctx) {
   const rule = /\/api\/(.+)/;
   const match = rule.exec(request.url);
   if (!match) {
-    return ctx.throw(404, "Bad URL");
+    return ctx.throw(404, 'Bad URL');
   }
   const [, ep] = match;
   if (!endpoints[ep]) {
-    return ctx.throw(404, "Endpoint not found");
+    return ctx.throw(404, 'Endpoint not found');
   }
   const { response, sendToQueue } = endpoints[ep];
   if (response) {
@@ -28,9 +29,20 @@ app.use(async function webApp(ctx) {
 module.exports = ({ port = 9999 }) => {
   app.listen(port);
   return {
-    type: "web",
+    type: 'web',
     input({ endpoint, response }, sendToQueue) {
       endpoints[endpoint] = { response, sendToQueue };
-    }
+    },
+    output({ url, method }) {
+      method = method.toLowerCase();
+      if (method !== 'get' && method !== 'post') {
+        throw new Error(`Method "${method}" is not supported`);
+      }
+      let dataHandler = data => tiny[method]({ url, data });
+      if (method === 'get') {
+        dataHandler = dataHandler.bind(null, null);
+      }
+      return dataHandler;
+    },
   };
 };
