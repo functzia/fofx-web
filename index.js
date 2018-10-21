@@ -26,8 +26,10 @@ app.use(async function webApp(ctx) {
   }
 });
 
-module.exports = ({ port = 9999 }) => {
-  app.listen(port);
+module.exports = ({ port = 9999 }, log) => {
+  app.listen(port, () =>
+    log.info(`Listening on http://localhost:${port}/api/:endpoint`)
+  );
   return {
     type: 'web',
     input({ endpoint, response }, sendToQueue) {
