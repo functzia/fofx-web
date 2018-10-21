@@ -2,7 +2,7 @@ const Koa = require('koa');
 const koaBody = require('koa-body');
 const tiny = require('tiny-json-http');
 
-const app = (module.exports = new Koa());
+const app = new Koa();
 
 app.use(koaBody());
 
@@ -19,8 +19,14 @@ app.use(async function webApp(ctx) {
     return ctx.throw(404, 'Endpoint not found');
   }
   const { response, sendToQueue } = endpoints[ep];
+  const execution = sendToQueue(request);
   if (response) {
-    ctx.body = await sendToQueue(request);
+    const result = await execution;
+    if (result.ok) {
+      ctx.body = result.value;
+    } else {
+      ctx.throw(500, result.error);
+    }
   } else {
     ctx.body = { ok: true };
   }
