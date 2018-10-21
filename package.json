@@ -9,5 +9,11 @@
     "koa": "^2.5.3",
     "koa-body": "^4.0.4",
     "tiny-json-http": "^7.0.0"
-  }
+  },
+  "keywords": [
+    "fofx",
+    "plugin",
+    "http",
+    "restful"
+  ]
 }
