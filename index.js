@@ -19,7 +19,8 @@ app.use(async function webApp(ctx) {
     return ctx.throw(404, 'Endpoint not found');
   }
   const { response, sendToQueue } = endpoints[ep];
-  const execution = sendToQueue(request);
+  const { url, method, header, body } = request;
+  const execution = sendToQueue({ url, method, header, body });
   if (response) {
     const result = await execution;
     if (result.ok) {

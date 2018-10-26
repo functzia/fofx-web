@@ -1,6 +1,6 @@
 {
   "name": "fofx-web",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "https://github.com/functzia/fofx-web.git",
   "author": "Alon Niv <oakfang@gmail.com>",
